@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My JavaScript Projects</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary-color: #4a6fa5;
+        --secondary-color: #166088;
+        --accent-color: #4fc3f7;
+        --background-color: #f5f7fa;
+        --card-bg: #ffffff;
+        --text-color: #333333;
+        --text-light: #666666;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      h1 {
+        color: var(--secondary-color);
+        margin: 0;
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        margin-top: 10px;
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 10px;
+      }
+
+      .project-card {
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .project-card a {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .project-content {
+        padding: 20px;
+        flex-grow: 1;
+      }
+
+      .project-number {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 15px;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .project-title {
+        margin: 15px 0 10px;
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+      }
+
+      .project-description {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
+      }
+
+      .project-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .view-btn {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+
+      .view-btn:hover {
+        background-color: #3da8d8;
+      }
+
+      .project-category {
+        font-size: 0.8rem;
+        color: var(--text-light);
+        background-color: #e9ecef;
+        padding: 3px 8px;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .search-container {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .search-box {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px 20px;
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-box:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+      }
+
+      .category-filter {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .category-btn {
+        padding: 8px 15px;
+        background-color: #e9ecef;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .category-btn:hover,
+      .category-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>My JavaScript Projects</h1>
+        <p class="subtitle">A collection of my interactive web applications</p>
+      </header>
+
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-box"
+          placeholder="Search projects..." />
+      </div>
+
+      <div class="category-filter">
+        <button class="category-btn active">All</button>
+        <button class="category-btn">Calculators</button>
+        <button class="category-btn">Games</button>
+        <button class="category-btn">Utilities</button>
+        <button class="category-btn">Creative</button>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-number">01</div>
+          <a href="../1-calculator/calculatorTow.html">
+            <div class="project-content">
+              <h3 class="project-title">Calculator</h3>
+              <p class="project-description">
+                A fully functional calculator with basic arithmetic operations
+                and a clean interface.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Calculator</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">02</div>
+          <a href="../2-celcius to farenheit/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Temperature Converter</h3>
+              <p class="project-description">
+                Convert between Celsius and Fahrenheit with real-time updates as
+                you type.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">03</div>
+          <a href="../3-guess number/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Number Guessing Game</h3>
+              <p class="project-description">
+                Try to guess the secret number with hints telling you if you're
+                too high or too low.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Game</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">04</div>
+          <a href="../4-Timer/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Timer</h3>
+              <p class="project-description">
+                Countdown timer with start, pause, and reset functionality.
+                Perfect for productivity.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">05</div>
+          <a href="../5-DynamicMultiplicationTable/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Multiplication Table</h3>
+              <p class="project-description">
+                Dynamic multiplication table generator that updates as you
+                change the input number.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Educational</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">06</div>
+          <a href="../6-basket/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Shopping Basket</h3>
+              <p class="project-description">
+                Interactive shopping cart that calculates totals as you add or
+                remove items.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">E-commerce</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">07</div>
+          <a href="../7-Clock/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Digital Clock</h3>
+              <p class="project-description">
+                Real-time digital clock showing hours, minutes, and seconds with
+                a sleek design.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">08</div>
+          <a href="../8-RockPaperScissors/index2.html">
+            <div class="project-content">
+              <h3 class="project-title">Rock Paper Scissors</h3>
+              <p class="project-description">
+                Classic game against the computer with score tracking and fun
+                animations.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Game</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">09</div>
+          <a href="../9-morsCode/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Morse Code Translator</h3>
+              <p class="project-description">
+                Convert text to Morse code and vice versa with audio playback
+                capability.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">10</div>
+          <a href="../10-age calculator/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Age Calculator</h3>
+              <p class="project-description">
+                Calculate exact age in years, months, and days from a birth date
+                to today.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Calculator</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">11</div>
+          <a href="../11-musicPlayer/home.html">
+            <div class="project-content">
+              <h3 class="project-title">Music Player</h3>
+              <p class="project-description">
+                Custom audio player with play/pause, skip, and volume controls.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Media</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">12</div>
+          <a href="../12-note/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Note Taking App</h3>
+              <p class="project-description">
+                Create, edit, and delete notes that persist in your browser's
+                local storage.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Productivity</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">13</div>
+          <a href="../13-Notification/html.html">
+            <div class="project-content">
+              <h3 class="project-title">Notification System</h3>
+              <p class="project-description">
+                Custom notification alerts that appear on screen with different
+                styles.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">UI Component</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">14</div>
+          <a href="../14-password-geraitor/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Password Generator</h3>
+              <p class="project-description">
+                Generate secure random passwords with customizable length and
+                character sets.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Security</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">15</div>
+          <a href="../15-quizApp/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Quiz App</h3>
+              <p class="project-description">
+                Interactive quiz with multiple choice questions and score
+                calculation.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Educational</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">16</div>
+          <a href="../16-QrCode/html.html">
+            <div class="project-content">
+              <h3 class="project-title">QR Code Generator</h3>
+              <p class="project-description">
+                Convert text or URLs into QR codes that can be downloaded as
+                images.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">17</div>
+          <a href="../17-weather/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Weather App</h3>
+              <p class="project-description">
+                Get current weather information for any location with a clean
+                visual display.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">API Integration</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">18</div>
+          <a href="../18-color flipper/mine.html">
+            <div class="project-content">
+              <h3 class="project-title">Color Flipper</h3>
+              <p class="project-description">
+                Generate random colors and apply them to the background with hex
+                codes.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Creative</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">19</div>
+          <a href="../19-list/index.html">
+            <div class="project-content">
+              <h3 class="project-title">To-Do List</h3>
+              <p class="project-description">
+                Manage tasks with add, complete, and delete functionality.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Productivity</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">20</div>
+          <a href="../20-palindrome checker/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Palindrome Checker</h3>
+              <p class="project-description">
+                Check if a word or phrase reads the same forwards and backwards.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">21</div>
+          <a href="../21-stop watch/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Stopwatch</h3>
+              <p class="project-description">
+                Precision stopwatch with start, stop, and lap time
+                functionality.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Utility</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-card">
+          <div class="project-number">22</div>
+          <a href="../22-random quote generator/index.html">
+            <div class="project-content">
+              <h3 class="project-title">Quote Generator</h3>
+              <p class="project-description">
+                Get inspirational quotes at the click of a button with share
+                functionality.
+              </p>
+            </div>
+            <div class="project-footer">
+              <span class="project-category">Creative</span>
+              <button class="view-btn">View Project</button>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Basic search functionality
+      document
+        .querySelector(".search-box")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const projects = document.querySelectorAll(".project-card");
+
+          projects.forEach((project) => {
+            const title = project
+              .querySelector(".project-title")
+              .textContent.toLowerCase();
+            const description = project
+              .querySelector(".project-description")
+              .textContent.toLowerCase();
+
+            if (
+              title.includes(searchTerm) ||
+              description.includes(searchTerm)
+            ) {
+              project.style.display = "flex";
+            } else {
+              project.style.display = "none";
+            }
+          });
+        });
+
+      // Category filter functionality
+      document.querySelectorAll(".category-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          document
+            .querySelectorAll(".category-btn")
+            .forEach((b) => b.classList.remove("active"));
+          this.classList.add("active");
+
+          const category = this.textContent;
+          const projects = document.querySelectorAll(".project-card");
+
+          if (category === "All") {
+            projects.forEach((project) => {
+              project.style.display = "flex";
+            });
+            return;
+          }
+
+          projects.forEach((project) => {
+            const projectCategory =
+              project.querySelector(".project-category").textContent;
+            if (projectCategory.includes(category)) {
+              project.style.display = "flex";
+            } else {
+              project.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
