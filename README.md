@@ -9,3 +9,5 @@
 📌 To easily access the projects, open `00main/main.html`.
 
 This file contains links to all numbered projects (like `01-calculator`, `02-celcius to farenheit`, etc.) for quick navigation.
+ ---- 
+ link : https://omiddiba13.github.io/MyJs/00-MAIN/main.html
